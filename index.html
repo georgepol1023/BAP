@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2c5282">
+    
+    <!-- iOS Specific Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Ελληνική Βίβλος">
+    
+    <title>Ελληνική Βίβλος - Νεόφυτος Βάμβας</title>
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+    
+    <!-- Splash Screens for iOS -->
+    <link rel="apple-touch-startup-image" href="icons/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="icons/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="icons/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="icons/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="icons/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="icons/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="icons/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <div class="loading-icon">📖</div>
+                <h1>Ελληνική Βίβλος</h1>
+                <p>Νεόφυτος Βάμβας</p>
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+
+        <!-- Book List View -->
+        <div id="book-list-view" class="view" style="display: none;">
+            <header class="app-header">
+                <h1>Ελληνική Βίβλος</h1>
+                <button id="settings-btn" class="icon-btn" aria-label="Ρυθμίσεις">⚙️</button>
+            </header>
+
+            <!-- Testament Tabs -->
+            <div class="testament-tabs">
+                <button id="old-testament-tab" class="tab active">Παλαιά Διαθήκη</button>
+                <button id="new-testament-tab" class="tab">Καινή Διαθήκη</button>
+            </div>
+
+            <!-- Book List -->
+            <div id="book-list" class="book-list">
+                <!-- Books will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Chapter List View -->
+        <div id="chapter-list-view" class="view" style="display: none;">
+            <header class="app-header">
+                <button id="back-to-books" class="icon-btn" aria-label="Πίσω">←</button>
+                <h1 id="book-title"></h1>
+            </header>
+
+            <div id="chapter-list" class="chapter-list">
+                <!-- Chapters will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Chapter Reading View -->
+        <div id="chapter-view" class="view" style="display: none;">
+            <header class="app-header">
+                <button id="back-to-chapters" class="icon-btn" aria-label="Πίσω">←</button>
+                <h1 id="chapter-title"></h1>
+                <button id="chapter-settings-btn" class="icon-btn" aria-label="Ρυθμίσεις">⚙️</button>
+            </header>
+
+            <div id="chapter-content" class="chapter-content">
+                <!-- Chapter content will be dynamically inserted here -->
+            </div>
+
+            <!-- Navigation -->
+            <div class="chapter-nav">
+                <button id="prev-chapter" class="nav-btn">← Προηγούμενο</button>
+                <button id="next-chapter" class="nav-btn">Επόμενο →</button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Ρυθμίσεις</h2>
+                    <button id="close-settings" class="icon-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label for="font-size">Μέγεθος Γραμματοσειράς</label>
+                        <input type="range" id="font-size" min="12" max="24" value="16" step="1">
+                        <span id="font-size-value">16px</span>
+                    </div>
+                    <div class="setting-group">
+                        <label>Παράδειγμα Κειμένου</label>
+                        <p id="sample-text" class="sample-text">Εν αρχή ήτο ο Λόγος, και ο Λόγος ήτο προς τον Θεόν, και Θεός ήτο ο Λόγος.</p>
+                    </div>
+                    <div class="setting-group">
+                        <label>Πληροφορίες</label>
+                        <p class="info-text">
+                            Μετάφραση: Νεόφυτος Βάμβας (1850)<br>
+                            Έκδοση: 1.0<br>
+                            Progressive Web App
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Install Banner -->
+        <div id="install-banner" class="install-banner" style="display: none;">
+            <div class="install-content">
+                <span>📱 Προσθέστε στην Αρχική Οθόνη για καλύτερη εμπειρία!</span>
+                <button id="dismiss-banner" class="dismiss-btn">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="bible-data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => console.log('SW registered:', registration))
+                    .catch(error => console.log('SW registration failed:', error));
+            });
+        }
+    </script>
+</body>
+</html>

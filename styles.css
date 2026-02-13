@@ -1,0 +1,520 @@
+/* ===== CSS Variables ===== */
+:root {
+    --primary-color: #2c5282;
+    --primary-dark: #1a365d;
+    --secondary-color: #4299e1;
+    --background: #ffffff;
+    --surface: #f7fafc;
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --border-color: #e2e8f0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --font-serif: Georgia, 'Times New Roman', serif;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #1a202c;
+        --surface: #2d3748;
+        --text-primary: #f7fafc;
+        --text-secondary: #cbd5e0;
+        --border-color: #4a5568;
+    }
+}
+
+/* ===== Base Styles ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--background);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+#app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Loading Screen ===== */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+}
+
+.loading-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.loading-content h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.loading-content p {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Views ===== */
+.view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ===== Header ===== */
+.app-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    /* iOS safe area */
+    padding-top: max(12px, env(safe-area-inset-top));
+}
+
+.app-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-serif);
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.icon-btn:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== Testament Tabs ===== */
+.testament-tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.tab {
+    flex: 1;
+    padding: 16px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* ===== Book List ===== */
+.book-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+
+.book-item {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.book-item:active {
+    transform: scale(0.98);
+    background: var(--border-color);
+}
+
+.book-name {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+}
+
+.book-meta {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* ===== Chapter List ===== */
+.chapter-list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 12px;
+    align-content: start;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.chapter-item {
+    aspect-ratio: 1;
+    background: var(--surface);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.chapter-item:active {
+    transform: scale(0.95);
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===== Chapter Content ===== */
+.chapter-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px;
+    padding-bottom: 80px;
+}
+
+.chapter-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.chapter-header h2 {
+    font-size: 18px;
+    font-family: var(--font-serif);
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.chapter-header h1 {
+    font-size: 28px;
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.verse-container {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.verse-number {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 35px;
+    text-align: right;
+    margin-right: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    font-family: var(--font-serif);
+}
+
+.verse-text {
+    font-size: 16px;
+    line-height: 1.8;
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+/* ===== Chapter Navigation ===== */
+.chapter-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn {
+    flex: 1;
+    padding: 14px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-btn:active {
+    transform: scale(0.98);
+    background: var(--primary-dark);
+}
+
+.nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ===== Modal ===== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--background);
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px 16px 0 0;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.setting-group {
+    margin-bottom: 24px;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.setting-group input[type="range"] {
+    width: 100%;
+    margin: 12px 0;
+}
+
+#font-size-value {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--surface);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.sample-text {
+    padding: 16px;
+    background: var(--surface);
+    border-radius: 8px;
+    font-family: var(--font-serif);
+    line-height: 1.8;
+}
+
+.info-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* ===== Install Banner ===== */
+.install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--primary-color);
+    color: white;
+    padding: 16px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    animation: slideUp 0.3s;
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dismiss-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dismiss-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== Responsive ===== */
+@media (min-width: 768px) {
+    .chapter-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .chapter-nav {
+        max-width: 800px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 12px 12px 0 0;
+    }
+}
+
+/* ===== Utility ===== */
+.hidden {
+    display: none !important;
+}
+
+/* ===== iOS Specific Fixes ===== */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* iOS-specific overscroll behavior */
+        overscroll-behavior-y: none;
+    }
+}
